@@ -1,15 +1,48 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using wt_lab5_5razor_glebko.Data;
-using wt_lab5_5razor_glebko.Models;
+using Microsoft.EntityFrameworkCore;
+using wt_lab8_8razor_postgresql_glebko.Data;
+using wt_lab8_8razor_postgresql_glebko.Models;
 
-namespace wt_lab5_5razor_glebko.Pages.Flights;
+namespace wt_lab8_8razor_postgresql_glebko.Pages.Flights;
 
 public class IndexModel : PageModel
 {
-    public List<Flight> Flights { get; set; } = new();
+    private readonly AppDbContext _context;
 
-    public void OnGet()
+    public IndexModel(AppDbContext context)
     {
-        Flights = FlightStore.Flights;
+        _context = context;
+    }
+
+    // Свойство, которое использует ваш Index.cshtml
+    public IList<Flight> Flights { get; set; } = default!;
+
+    [BindProperty(SupportsGet = true)]
+    public string? Search { get; set; }
+
+    public async Task OnGetAsync()
+    {
+        var query = _context.Flights.AsQueryable();
+
+        // Поиск по городам (если ввели в строку поиска)
+        if (!string.IsNullOrWhiteSpace(Search))
+        {
+            query = query.Where(p => p.gorod_prilet.Contains(Search) || p.gorod_vilet.Contains(Search));
+        }
+
+        Flights = await query.OrderBy(p => p.nomer_reisa).ToListAsync();
+    }
+
+    // Обработчик для удаления (если добавите кнопку удаления в Index.cshtml)
+    public async Task<IActionResult> OnPostDeleteAsync(int id)
+    {
+        var flight = await _context.Flights.FindAsync(id);
+        if (flight != null)
+        {
+            _context.Flights.Remove(flight);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToPage("./Index");
     }
 }

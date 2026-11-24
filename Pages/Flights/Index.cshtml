@@ -1,65 +1,48 @@
-@page
-@model wt_lab5_5razor_glebko.Pages.Flights.IndexModel
-@{
-    ViewData["Title"] = "Рейсы";
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using wt_lab8_8razor_postgresql_glebko.Data;
+using wt_lab8_8razor_postgresql_glebko.Models;
+
+namespace wt_lab8_8razor_postgresql_glebko.Pages.Flights;
+
+public class IndexModel : PageModel
+{
+    private readonly AppDbContext _context;
+
+    public IndexModel(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    // Сделали IList<Flight> с именем Flights, чтобы HTML-код работал как есть
+    public IList<Flight> Flights { get; set; } = default!;
+
+    [BindProperty(SupportsGet = true)]
+    public string? Search { get; set; }
+
+    public async Task OnGetAsync()
+    {
+        var query = _context.Flights.AsQueryable();
+
+        // Поиск по городам (города вылета или прилета)
+        if (!string.IsNullOrWhiteSpace(Search))
+        {
+            query = query.Where(p => p.gorod_prilet.Contains(Search) || p.gorod_vilet.Contains(Search));
+        }
+
+        Flights = await query.OrderBy(p => p.nomer_reisa).ToListAsync();
+    }
+
+    // Обработчик удаления (можно добавить кнопку в Index.cshtml)
+    public async Task<IActionResult> OnPostDeleteAsync(int id)
+    {
+        var flight = await _context.Flights.FindAsync(id);
+        if (flight != null)
+        {
+            _context.Flights.Remove(flight);
+            await _context.SaveChangesAsync();
+        }
+        return RedirectToPage("./Index");
+    }
 }
-
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold">Рейсы авиакомпании</h1>
-            <p class="text-muted">Всего рейсов: @Model.Flights.Count</p>
-        </div>
-        <a asp-page="/Flights/Create" class="btn btn-primary">
-            Добавить рейс
-        </a>
-    </div>
-
-    @if (Model.Flights.Count == 0)
-    {
-        <div class="alert alert-info">Рейсы не найдены.</div>
-    }
-    else
-    {
-        <div class="row g-4">
-            @foreach (var flight in Model.Flights)
-            {
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm rounded-4">
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">
-                                Рейс №@flight.nomer_reisa
-                            </span>
-                            <h5 class="card-title">
-                                @flight.gorod_vilet → @flight.gorod_prilet
-                            </h5>
-                            <p class="text-muted mb-2">
-                                @flight.vremya_vileta.ToString("dd.MM.yyyy HH:mm")
-                            </p>
-                            <p class="fs-4 fw-bold text-primary">
-                                @flight.cena руб.
-                            </p>
-                            <p>
-                                <span class="badge bg-info text-dark">
-                                    Мест: @flight.mesta
-                                </span>
-                                @if (flight.dostupno)
-                                {
-                                    <span class="badge bg-success">Продажа открыта</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-danger">Продажа закрыта</span>
-                                }
-                            </p>
-                            <a asp-page="/Flights/Details" asp-route-id="@flight.nomer_reisa"
-                               class="btn btn-outline-primary">
-                                Подробнее
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-</div>

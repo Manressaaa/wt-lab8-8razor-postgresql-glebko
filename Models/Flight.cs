@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace wt_lab5_5razor_glebko.Models;
+namespace wt_lab8_8razor_postgresql_glebko.Models; 
 
 public class Flight
 {
-    [Required(ErrorMessage = "Укажите номер рейса")]
-    [Range(1, 99999, ErrorMessage = "Номер должен быть от 1 до 99999")]
     public int nomer_reisa { get; set; }
 
     [Required(ErrorMessage = "Укажите город вылета")]
@@ -17,7 +15,7 @@ public class Flight
     public string gorod_prilet { get; set; } = "";
 
     [Required(ErrorMessage = "Укажите дату и время вылета")]
-    public DateTime vremya_vileta { get; set; }
+    public DateTime vremya_vileta { get; set; } = DateTime.UtcNow; 
 
     [Required(ErrorMessage = "Укажите цену")]
     [Range(0, 1000000, ErrorMessage = "Цена должна быть от 0 до 1 000 000")]
@@ -28,4 +26,8 @@ public class Flight
     public int mesta { get; set; }
 
     public bool dostupno { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public string Description { get; set; } = "";
 }
