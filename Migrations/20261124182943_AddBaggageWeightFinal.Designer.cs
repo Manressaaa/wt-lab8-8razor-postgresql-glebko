@@ -12,8 +12,8 @@ using wt_lab8_8razor_postgresql_glebko.Data;
 namespace wt_lab8_8razor_postgresql_glebko.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261124141831_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261124182943_AddBaggageWeightFinal")]
+    partial class AddBaggageWeightFinal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("nomer_reisa"));
+
+                    b.Property<int>("BaggageWeight")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -70,6 +73,7 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         new
                         {
                             nomer_reisa = 101,
+                            BaggageWeight = 0,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "",
                             cena = 250m,
@@ -82,6 +86,7 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         new
                         {
                             nomer_reisa = 102,
+                            BaggageWeight = 0,
                             CreatedAt = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "",
                             cena = 180m,
@@ -94,6 +99,7 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         new
                         {
                             nomer_reisa = 103,
+                            BaggageWeight = 0,
                             CreatedAt = new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "",
                             cena = 400m,
@@ -106,6 +112,7 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         new
                         {
                             nomer_reisa = 104,
+                            BaggageWeight = 0,
                             CreatedAt = new DateTime(2026, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "",
                             cena = 300m,
@@ -118,6 +125,7 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                         new
                         {
                             nomer_reisa = 105,
+                            BaggageWeight = 0,
                             CreatedAt = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "",
                             cena = 150m,

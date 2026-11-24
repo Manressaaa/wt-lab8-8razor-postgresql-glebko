@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace wt_lab8_8razor_postgresql_glebko.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddBaggageWeightFinal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,7 +27,8 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
                     mesta = table.Column<int>(type: "integer", nullable: false),
                     dostupno = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    BaggageWeight = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,14 +37,14 @@ namespace wt_lab8_8razor_postgresql_glebko.Migrations
 
             migrationBuilder.InsertData(
                 table: "Flights",
-                columns: new[] { "nomer_reisa", "CreatedAt", "Description", "cena", "dostupno", "gorod_prilet", "gorod_vilet", "mesta", "vremya_vileta" },
+                columns: new[] { "nomer_reisa", "BaggageWeight", "CreatedAt", "Description", "cena", "dostupno", "gorod_prilet", "gorod_vilet", "mesta", "vremya_vileta" },
                 values: new object[,]
                 {
-                    { 101, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "", 250m, true, "Горки)", "Нюйорк", 45, new DateTime(2026, 11, 15, 8, 30, 0, 0, DateTimeKind.Utc) },
-                    { 102, new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), "", 180m, true, "Горки", "Минск", 30, new DateTime(2026, 11, 16, 12, 0, 0, 0, DateTimeKind.Utc) },
-                    { 103, new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), "", 400m, false, "Горки", "Москва", 0, new DateTime(2026, 11, 17, 22, 15, 0, 0, DateTimeKind.Utc) },
-                    { 104, new DateTime(2026, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), "", 300m, true, "Горки", "Гомель", 50, new DateTime(2026, 12, 20, 14, 0, 0, 0, DateTimeKind.Utc) },
-                    { 105, new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), "", 150m, true, "Горки", "Витебск", 20, new DateTime(2026, 12, 25, 6, 45, 0, 0, DateTimeKind.Utc) }
+                    { 101, 0, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "", 250m, true, "Горки)", "Нюйорк", 45, new DateTime(2026, 11, 15, 8, 30, 0, 0, DateTimeKind.Utc) },
+                    { 102, 0, new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Utc), "", 180m, true, "Горки", "Минск", 30, new DateTime(2026, 11, 16, 12, 0, 0, 0, DateTimeKind.Utc) },
+                    { 103, 0, new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc), "", 400m, false, "Горки", "Москва", 0, new DateTime(2026, 11, 17, 22, 15, 0, 0, DateTimeKind.Utc) },
+                    { 104, 0, new DateTime(2026, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc), "", 300m, true, "Горки", "Гомель", 50, new DateTime(2026, 12, 20, 14, 0, 0, 0, DateTimeKind.Utc) },
+                    { 105, 0, new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc), "", 150m, true, "Горки", "Витебск", 20, new DateTime(2026, 12, 25, 6, 45, 0, 0, DateTimeKind.Utc) }
                 });
         }
 
