@@ -45,6 +45,12 @@
                             <span asp-validation-for="Flight.mesta" class="text-danger"></span>
                         </div>
 
+                         <div class="form-group mb-3">
+                            <label asp-for="Flight.BaggageWeight" class="control-label">Вес багажа (кг)</label>
+                            <input asp-for="Flight.BaggageWeight" class="form-control" />
+                            <span asp-validation-for="Flight.BaggageWeight" class="text-danger"></span>
+                        </div>
+
                         <div class="form-check mb-4">
                             <input asp-for="Flight.dostupno" class="form-check-input" />
                             <label asp-for="Flight.dostupno" class="form-check-label">
