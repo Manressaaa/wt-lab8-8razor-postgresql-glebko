@@ -1,14 +1,81 @@
 @page
-@model IndexModel
+@model wt_lab8_8razor_postgresql_glebko.Pages.Flights.IndexModel
 @{
-    ViewData["Title"] = "Главная";
+    ViewData["Title"] = "Список рейсов";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Авиакомпания Glebko</h1>
-    <p>Моя любимая авиакомпания и ваша тоже!</p>
-    
-    <div class="mt-4">
-        <a asp-page="/Flights/Index" class="btn btn-primary btn-lg">Перейти к списку рейсов</a>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Рейсы авиакомпании</h1>
+            <p class="text-muted">Всего рейсов: @Model.Flights.Count</p>
+        </div>
+        <a asp-page="/Flights/Create" class="btn btn-primary">
+            + Добавить рейс
+        </a>
     </div>
+
+    <!-- Форма поиска -->
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="Search" value="@Model.Search" class="form-control" placeholder="Поиск по городу вылета или прилета...">
+            <button type="submit" class="btn btn-outline-primary">Найти</button>
+            @if (!string.IsNullOrWhiteSpace(Model.Search))
+            {
+                <a asp-page="/Flights/Index" class="btn btn-outline-secondary">Сбросить</a>
+            }
+        </div>
+    </form>
+
+    @if (Model.Flights.Count == 0)
+    {
+        <div class="alert alert-info">Рейсы не найдены.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var flight in Model.Flights)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm rounded-4">
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">
+                                Рейс №@flight.nomer_reisa
+                            </span>
+                            <h5 class="card-title">
+                                @flight.gorod_vilet → @flight.gorod_prilet
+                            </h5>
+                            <p class="text-muted mb-2">
+                                @flight.vremya_vileta.ToString("dd.MM.yyyy HH:mm")
+                            </p>
+                            <p class="fs-4 fw-bold text-primary">
+                                @flight.cena руб.
+                            </p>
+                            <p>
+                                <span class="badge bg-info text-dark">
+                                    Мест: @flight.mesta
+                                </span>
+                                @if (flight.dostupno)
+                                {
+                                    <span class="badge bg-success">Продажа открыта</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Продажа закрыта</span>
+                                }
+                            </p>
+                            <div class="d-flex gap-2">
+                                <a asp-page="/Flights/Details" asp-route-id="@flight.nomer_reisa" class="btn btn-outline-primary btn-sm">
+                                    Подробнее
+                                </a>
+                                <a asp-page="/Flights/Edit" asp-route-id="@flight.nomer_reisa" class="btn btn-outline-warning btn-sm">
+                                    Редактировать
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
