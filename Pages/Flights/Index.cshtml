@@ -1,48 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using wt_lab8_8razor_postgresql_glebko.Data;
-using wt_lab8_8razor_postgresql_glebko.Models;
-
-namespace wt_lab8_8razor_postgresql_glebko.Pages.Flights;
-
-public class IndexModel : PageModel
-{
-    private readonly AppDbContext _context;
-
-    public IndexModel(AppDbContext context)
-    {
-        _context = context;
-    }
-
-    // Сделали IList<Flight> с именем Flights, чтобы HTML-код работал как есть
-    public IList<Flight> Flights { get; set; } = default!;
-
-    [BindProperty(SupportsGet = true)]
-    public string? Search { get; set; }
-
-    public async Task OnGetAsync()
-    {
-        var query = _context.Flights.AsQueryable();
-
-        // Поиск по городам (города вылета или прилета)
-        if (!string.IsNullOrWhiteSpace(Search))
-        {
-            query = query.Where(p => p.gorod_prilet.Contains(Search) || p.gorod_vilet.Contains(Search));
-        }
-
-        Flights = await query.OrderBy(p => p.nomer_reisa).ToListAsync();
-    }
-
-    // Обработчик удаления (можно добавить кнопку в Index.cshtml)
-    public async Task<IActionResult> OnPostDeleteAsync(int id)
-    {
-        var flight = await _context.Flights.FindAsync(id);
-        if (flight != null)
-        {
-            _context.Flights.Remove(flight);
-            await _context.SaveChangesAsync();
-        }
-        return RedirectToPage("./Index");
-    }
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Главная";
 }
+
+<div class="text-center">
+    <h1 class="display-4">Авиакомпания Glebko</h1>
+    <p>Моя любимая авиакомпания и ваша тоже!</p>
+    
+    <div class="mt-4">
+        <a asp-page="/Flights/Index" class="btn btn-primary btn-lg">Перейти к списку рейсов</a>
+    </div>
+</div>
