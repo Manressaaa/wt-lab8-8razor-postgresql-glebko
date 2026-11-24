@@ -29,8 +29,8 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        // База данных сама сгенерирует ID (так как у нас Identity колонка),
-        // поэтому вручную генерировать номер рейса не нужно!
+        // ВОТ ЭТА СТРОКА: Принудительно делаем время UTC
+        Flight.vremya_vileta = DateTime.SpecifyKind(Flight.vremya_vileta, DateTimeKind.Utc);
 
         _context.Flights.Add(Flight);
         await _context.SaveChangesAsync();

@@ -38,6 +38,8 @@ public class EditModel : PageModel
             return Page();
         }
 
+        Flight.vremya_vileta = DateTime.SpecifyKind(Flight.vremya_vileta, DateTimeKind.Utc);
+
         // Находим существующий рейс в базе
         var existing = await _context.Flights.FindAsync(Flight.nomer_reisa);
         if (existing == null)
